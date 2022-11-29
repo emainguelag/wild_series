@@ -18,12 +18,13 @@
 		{% endblock %}
 	</head>
 
-	<header>
-		{% block header %}
-			{{ include('_navbar.html.twig') }}
-		{% endblock %}
-	</header>
+
 	<body>
+		<header>
+			{% block header %}
+				{{ include('_navbar.html.twig') }}
+			{% endblock %}
+		</header>
 		{% block body %}{% endblock %}
 	</body>
 </html>
