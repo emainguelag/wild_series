@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CategoryRepository;
+use App\Repository\ProgramRepository;
 
 #[Route('/category', name: 'category_')]
 class CategoryController extends AbstractController
@@ -23,19 +24,24 @@ class CategoryController extends AbstractController
 
     #[Route('/{categoryName}',methods: ['GET'], name: 'show')]
 
-    public function show(string $categoryName, CategoryRepository $categoryRepository): Response
+    public function show(string $categoryName, CategoryRepository $categoryRepository, ProgramRepository $programRepository): Response
     {
-        $category = $categoryName;
+        $category = $categoryRepository->findOneBy(['name' => $categoryName]);
+
+        $programs = $programRepository->findProgramsByCategory(['categoryName' => $categoryName]);
+
+        
 
         if (!$category) {
             throw $this->createNotFoundException(
                 'No category with name : '.$categoryName.' found in category\'s table.'
             );
         }
+
         return $this->render('category/show.html.twig', [
             'category' => $category,
+            'programs' => $programs,
         ]);
     }
-
 
 }

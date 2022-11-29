@@ -8,17 +8,20 @@
 		<h1>Toutes les catégories de la table category :
 		</h1>
 
-    <div class="row d-flex flex-row">
-		  {% for category in categories %}
+		<div class="row d-flex flex-row">
+			{% for category in categories %}
 
-            <ul class="list-group">
-                <li class="list-group-item">{{ loop.index }} /	{{ category.name }}</li>
-            </ul>
+				<ul class="list-group">
+					<a href="{{ path("category_show", { categoryName: category.name }) }}" class="list-group-item">
+                        {{ loop.index }} / {{ category.name }}
+                    </a>
 
-		  {% else %}
-			  Aucune categorie trouvée.
-		  {% endfor %}
-    </div>
+				</ul>
+
+			{% else %}
+				Aucune categorie trouvée.
+			{% endfor %}
+		</div>
 
 		<a href="{{ path('app_index') }}">
 			Retour à l'accueil

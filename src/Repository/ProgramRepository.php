@@ -39,6 +39,33 @@ class ProgramRepository extends ServiceEntityRepository
         }
     }
 
+    public function findProgramsByCategory($categoryName): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->addSelect('c') //to make Doctrine actually use the join
+            ->leftJoin('p.category', 'c')
+            ->where('c.name = :categoryName')
+            ->setParameter('categoryName', $categoryName)
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults(3)
+            ->getQuery();
+
+            return $query->getResult()
+        ;
+    }
+
+//     public function getMyEntityWithRelatedEntity($parameter) 
+// {
+//     $query = $this->createQueryBuilder('e')
+//         ->addSelect('r') //to make Doctrine actually use the join
+//         ->leftJoin('e.relatedEntity', 'r')
+//         ->where('r.foo = :parameter')
+//         ->setParameter('parameter', $parameter)
+//         ->getQuery();
+
+//     return $query->getResult();
+// }
+
 //    /**
 //     * @return Program[] Returns an array of Program objects
 //     */
