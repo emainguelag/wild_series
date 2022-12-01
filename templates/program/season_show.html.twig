@@ -3,19 +3,19 @@
 {% block title %}Saison #
 	{{ season.number }}
 	de
-	{{ program.title }}
+	{{ season.program.title }}
 {% endblock %}
 
 {% block body %}
 	<h1 class="mt-0">Saison #
 		{{ season.number }}
 		de
-		{{ program.title }}</h1>
+		{{ season.program.title }}</h1>
 	<div class="media bg-light">
 
 		<div class="media-body m-3">
 
-			<p>Description:
+			<p>Description:<br>
 				{{ season.description }}</p>
 
 		</div>
@@ -24,7 +24,7 @@
 		<h1 class="mt-0">Liste des épisodes:</h1>
 		{% for episode in season.episodes %}
 			<ul class="list-group col-md-6 offset-md-3 mt-3 mb-3">
-				<a href="" class="list-group-item">
+				<a href="{{ path("program_episode_show", { program: season.program.id , seasonId: season.id , episodeId: episode.id }) }}" class="list-group-item">
 					Episode
 					{{ episode.number }}
 					:
