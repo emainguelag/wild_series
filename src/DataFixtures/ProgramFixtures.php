@@ -33,7 +33,6 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ['title' => 'fyfy4', 'synopsis' => 'ftfyu', 'poster' => '', 'reference' => 'category_Action'],
     ];
 
-
     public function load(ObjectManager $manager): void
     {
         /*
@@ -53,6 +52,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
             $program->setPoster($values['poster']);
             $program->setCategory($this->getReference($values['reference']));
             $manager->persist($program);
+            $this->addReference('program_' . $keys, $program);
         }
         $manager->flush();
     }
