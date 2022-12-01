@@ -13,8 +13,10 @@
 
 				<ul class="list-group">
 					<a href="{{ path("category_show", { categoryName: category.name }) }}" class="list-group-item">
-                        {{ loop.index }} / {{ category.name }}
-                    </a>
+						{{ loop.index }}
+						/
+						{{ category.name }}
+					</a>
 
 				</ul>
 
@@ -22,6 +24,8 @@
 				Aucune categorie trouvée.
 			{% endfor %}
 		</div>
+
+		<a href="{{ path('category_new') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter une catégorie</a>
 
 		<a href="{{ path('app_index') }}">
 			Retour à l'accueil
