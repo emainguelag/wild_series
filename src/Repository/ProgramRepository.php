@@ -46,7 +46,7 @@ class ProgramRepository extends ServiceEntityRepository
             ->leftJoin('p.category', 'c')
             ->where('c.name = :categoryName')
             ->setParameter('categoryName', $categoryName)
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.id', 'DESC')
             ->setMaxResults(3)
             ->getQuery();
 
