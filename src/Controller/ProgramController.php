@@ -12,6 +12,7 @@ use App\Entity\Season;
 use App\Entity\Episode;
 use App\Form\ProgramType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
@@ -36,7 +37,10 @@ class ProgramController extends AbstractController
         $form->handleRequest($request);
        
         if ($form->isSubmitted() && $form->isValid()) {
-            $programRepository->save($program, true);        
+            $programRepository->save($program, true);
+            
+            $this->addFlash('success', 'The new program has been created');
+            
             return $this->redirectToRoute('program_index');
         }
         
