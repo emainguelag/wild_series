@@ -16,7 +16,7 @@
 	<div class="media bg-secondary">
 		{% for season in program.seasons %}
 			<ul class="list-group col-md-6 offset-md-3 mt-3 mb-3">
-				<a href="{{ path("program_season_show", { program: program.id ,  season: season.id }) }}" class="list-group-item">
+				<a href="{{ path("program_season_show", { program: program.id , season: season.id }) }}" class="list-group-item">
 					Saison
 					{{ season.number }}
 					/
@@ -25,6 +25,18 @@
 			</ul>
 		{% endfor %}
 	</div>
+	<strong>Acteurs :</strong>
+	<ul>
+		{% for actor in program.actors %}
+			<li>
+				<a href="{{ path("app_actor_show", { id: actor.id }) }}" class="list-group-item">
+					{{ actor.name }}
+				</a>
+			</li>
+		{% else %}
+			<li>Aucun acteur pour cette série</li>
+		{% endfor %}
+	</ul>
 
 	<a href="{{ path('program_index') }}">
 		Retour à la liste des programmes
