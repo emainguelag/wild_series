@@ -13,13 +13,15 @@
 			<p>{{ program.synopsis }}</p>
 			<strong>Catégorie :</strong>
 			<p>{{ program.category.name }}</p>
+			<strong>Durée :</strong>
+			<p>{{ programDuration }}</p>
 		</div>
 	</div>
 	<div class="media m-3 p-3 bg-secondary">
 		<strong>Saisons :</strong>
 		{% for season in program.seasons %}
 			<ul class="list-group col-md-6 offset-md-3 mt-3 mb-3">
-				<a href="{{ path("program_season_show", { program: program.id , season: season.id }) }}" class="list-group-item">
+				<a href="{{ path("program_season_show", { slug: program.slug , season: season.id }) }}" class="list-group-item">
 					Saison
 					{{ season.number }}
 					/

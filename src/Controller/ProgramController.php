@@ -11,8 +11,12 @@ use App\Entity\Program;
 use App\Entity\Season;
 use App\Entity\Episode;
 use App\Form\ProgramType;
+use App\Service\ProgramDuration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
@@ -28,7 +32,7 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/new', name: 'new')]
-    public function new(Request $request, ProgramRepository $programRepository): Response
+    public function new(Request $request, ProgramRepository $programRepository, SluggerInterface $slugger, MailerInterface $mailer): Response
     {
         $program = new Program();
 
@@ -37,7 +41,19 @@ class ProgramController extends AbstractController
         $form->handleRequest($request);
        
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $slug = $slugger->slug($program->getTitle());
+            $program->setSlug($slug);
+
             $programRepository->save($program, true);
+
+            $email = (new Email())
+                ->from($this->getParameter('mailer_from'))
+                ->to('your_email@example.com')
+                ->subject('Une nouvelle série vient d\'être publiée !')
+                ->html($this->renderView('Program/newProgramEmail.html.twig', ['program' => $program]));
+
+            $mailer->send($email);
             
             $this->addFlash('success', 'The new program has been created');
             
@@ -49,19 +65,20 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/show/{id}', requirements: ['id'=>'\d+'],methods: ['GET'], name: 'show')]
-    public function show(Program $program, ProgramRepository $programRepository): Response
+    #[Route('/show/{slug}',methods: ['GET'], name: 'show')]
+    public function show(Program $program, ProgramRepository $programRepository, ProgramDuration $programDuration): Response
     {
         // $program = $programRepository->findOneBy(['id' => $id]);
         // same as $program = $programRepository->find($id);
 
         if (!$program) {
             throw $this->createNotFoundException(
-                'No program with id : '.$id.' found in program\'s table.'
+                'No program with name : '.$slug.' found in program\'s table.'
             );
         }
         return $this->render('program/show.html.twig', [
             'program' => $program,
+            'programDuration' => $programDuration->calculate($program)
         ]);
     }
 
@@ -83,7 +100,7 @@ class ProgramController extends AbstractController
         ]);
     }*/
 
-    #[Route('/{program}/seasons/{season}',methods: ['GET'], name: 'season_show')]
+    #[Route('/{slug}/seasons/{season}',methods: ['GET'], name: 'season_show')]
     public function showSeason(Program $program, Season $season): Response
     {
         
@@ -100,7 +117,7 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/{program}/season/{seasonId}/episode/{episodeId}',methods: ['GET'], name: 'episode_show')]
-    //#[Entity('program', options: ['mapping' => ['programId' => 'id']])]
+    // #[Entity('program', options: ['mapping' => ['programSlug' => 'slug']])]
     #[Entity('season', options: ['mapping' => ['seasonId' => 'id']])]
     #[Entity('episode', options: ['mapping' => ['episodeId' => 'id']])]
     public function showEpisode(Program $program, Season $season, Episode $episode): Response

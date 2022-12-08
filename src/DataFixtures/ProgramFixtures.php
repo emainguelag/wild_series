@@ -6,10 +6,12 @@ use App\Entity\Program;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
-    
+    private SluggerInterface $slug;
+
     const SERIES = [
         ['title' => 'PeakyBlinders', 'synopsis' => 'Fondée sur l\'histoire du gang des Peaky Blinders, actif à la fin du xixe siècle, cette série suit un groupe de gangsters de Birmingham à partir de 1919.', 'poster' => 'https://upload.wikimedia.org/wikipedia/fr/e/e8/Peaky_Blinders_titlecard.jpg', 'reference' => 'category_Action'],
         ['title' => 'The Crown', 'synopsis' => 'Au fil des décennies, des intrigues personnelles, des romances, et des rivalités politiques, la reine Élisabeth II continue de régner malgré les difficultés.', 'poster' => 'https://upload.wikimedia.org/wikipedia/fr/6/6f/The_Crown_Logo.jpg', 'reference' => 'category_Aventure'],
@@ -33,6 +35,11 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         ['title' => 'fyfy45', 'synopsis' => 'ftfyu', 'poster' => '', 'reference' => 'category_Action'],
     ];
 
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
     public function load(ObjectManager $manager): void
     {
         /*
@@ -47,7 +54,12 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
         foreach(self::SERIES as $keys => $values) {
             $program = new Program();
+
             $program->setTitle($values['title']);
+
+            $slug = $this->slugger->slug($program->getTitle());
+            $program->setSlug($slug);
+
             $program->setSynopsis($values['synopsis']);
             $program->setPoster($values['poster']);
             $program->setCategory($this->getReference($values['reference']));

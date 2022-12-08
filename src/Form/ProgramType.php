@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Entity\Actor;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -17,7 +18,13 @@ class ProgramType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class)
+            ->add('title', TextType::class, [
+                'label' => 'Titre',
+                'attr' => [
+                    'placeholder' => 'Saissisez le nom',
+                    'class' => 'col-8'
+                ],
+            ])
             ->add('synopsis', TextareaType::class)
             ->add('poster', UrlType::class)
             ->add('category', null, ['choice_label' => 'name'])
@@ -27,6 +34,9 @@ class ProgramType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'by_reference' => false,
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Ajouter une série'
             ])
         ;
     }

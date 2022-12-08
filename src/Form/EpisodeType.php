@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class EpisodeType extends AbstractType
 {
@@ -18,7 +19,11 @@ class EpisodeType extends AbstractType
             ->add('title', TextType::class)
             ->add('number', IntegerType::class)
             ->add('synopsis', TextareaType::class)
+            ->add('duration', IntegerType::class)
             ->add('season', null, ['choice_label' => 'number', 'group_by' => 'program.title'])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Ajouter un épisode'
+            ])
         ;
     }
 

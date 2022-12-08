@@ -16,7 +16,7 @@
 	<strong>Carrière:</strong>
 		{% for program in actor.programs %}
 			<ul class="list-group col-md-6 offset-md-3 mt-3 mb-3">
-				<a href="{{ path("program_show", { id: program.id }) }}" class="list-group-item">
+				<a href="{{ path("program_show", { slug: program.slug }) }}" class="list-group-item">
 					Série
 					{{ program.title }}
 

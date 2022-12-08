@@ -3,10 +3,12 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-	
-  {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit" class="btn btn-primary btn-lg active">Add category</button>
-    {{ form_end(form) }}
-    
+	<div class="row m-5">
+		<div class="col-6">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			{{ form_end(form) }}
+		</div>
+	</div>
+
 {% endblock %}
