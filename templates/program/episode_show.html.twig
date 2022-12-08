@@ -18,12 +18,13 @@
 	</h1>
 	<div class="media bg-light">
 
-		<div class="media-body m-3">
-
+		<div class="media-body m-3 p-3 ">
+			<strong>Titre:</strong>
 			<h2>
 				{{ episode.title }}
 			</h2>
-			<p>Description:<br>
+			<strong>Description:</strong>
+			<p>
 				{{ episode.synopsis }}
 			</p>
 
@@ -31,7 +32,7 @@
 	</div>
 
 
-	<a href="{{ path('program_index') }}">
+	<a href="{{ path('program_index') }}" class="btn btn-primary btn-lg active">
 		Retour à la liste des programmes
 	</a>
 {% endblock %}

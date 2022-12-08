@@ -33,7 +33,7 @@ class ActorFixtures extends Fixture implements DependentFixtureInterface
             $this->addReference('actor_' . $i, $actor);
         }
 
-        $manager->flush();
+        $manager->flush();  
     }
 
     public function getDependencies(): array

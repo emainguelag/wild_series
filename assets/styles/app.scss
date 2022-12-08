@@ -6,7 +6,7 @@ body {
 $primary: rgb(192, 29, 149);
 $secondary: rgb(72, 29, 192);
 $--bs-body-bg: rgb(228, 15, 47);
-$light: rgb(227, 239, 201);
+$light:#f8f9fa;
 
 // the ~ allows you to reference things in node_modules
 @import "~bootstrap/scss/bootstrap";

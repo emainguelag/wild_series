@@ -21,7 +21,7 @@
 							<small class="text-muted">Catégorie :
 								{{ program.category.name }}</small>
 						</p>
-             <a href="{{ path("program_show", { id: program.id }) }}">Voir la fiche</a>
+             <a href="{{ path("program_show", { id: program.id }) }}" class="btn btn-primary btn-lg active">Voir la fiche</a>
 					</div>
 				</div>
 
@@ -30,9 +30,9 @@
 		  {% endfor %}
     </div>
 
-	<a href="{{ path('program_new') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter une série</a>
+	<a href="{{ path('program_new') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Ajouter une série</a>
 
-		<a href="{{ path('app_index') }}">
+		<a href="{{ path('app_index') }}" class="btn btn-primary btn-lg active">
 			Retour à l'accueil
 		</a>
 
