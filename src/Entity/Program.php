@@ -9,9 +9,14 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+//Ici on importe le package Vich, que l’on utilisera sous l’alias “Vich”
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
 #[UniqueEntity('title')]
+#[Vich\Uploadable] 
 class Program
 {
     #[ORM\Id]
@@ -38,6 +43,19 @@ class Program
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $poster = null;
+
+    // On va créer un nouvel attribut à notre entité, qui ne sera pas lié à une colonne
+    // Tu peux d’ailleurs voir que l’attribut ORM column n’est pas spécifiée car
+    // On ne rajoute pas de données de type file en bdd
+    #[Vich\UploadableField(mapping: 'poster_file', fileNameProperty: 'poster')]
+    #[Assert\File(
+        maxSize: '1M',
+        mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+    )]
+    private ?File $posterFile = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne (inversedBy: 'programs')]
     #[ORM\JoinColumn(nullable: false)]
@@ -176,6 +194,49 @@ class Program
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of posterFile
+     */ 
+    public function getPosterFile(): ?File
+    {
+        return $this->posterFile;
+    }
+
+    /**
+     * Set the value of posterFile
+     *
+     * @return  self
+     */ 
+    public function setPosterFile(File $image = null): Program
+    {
+        $this->posterFile = $image;
+        if ($image) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of updatedAt
+     */ 
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the value of updatedAt
+     *
+     * @return  self
+     */ 
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

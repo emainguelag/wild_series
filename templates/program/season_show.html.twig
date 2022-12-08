@@ -23,7 +23,7 @@
 		<h1 class="mt-0">Liste des épisodes:</h1>
 		{% for episode in season.episodes %}
 			<ul class="list-group col-md-6 offset-md-3 mt-3 mb-3">
-				<a href="{{ path("program_episode_show", { program: season.program.id , seasonId: season.id , episodeId: episode.id }) }}" class="list-group-item">
+				<a href="{{ path("program_episode_show", { program: season.program.id , seasonId: season.id , episodeSlug: episode.slug }) }}" class="list-group-item">
 					Episode
 					{{ episode.number }}
 					:

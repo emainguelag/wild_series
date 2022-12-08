@@ -116,10 +116,10 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{program}/season/{seasonId}/episode/{episodeId}',methods: ['GET'], name: 'episode_show')]
+    #[Route('/{program}/season/{seasonId}/episode/{episodeSlug}',methods: ['GET'], name: 'episode_show')]
     // #[Entity('program', options: ['mapping' => ['programSlug' => 'slug']])]
     #[Entity('season', options: ['mapping' => ['seasonId' => 'id']])]
-    #[Entity('episode', options: ['mapping' => ['episodeId' => 'id']])]
+    #[Entity('episode', options: ['mapping' => ['episodeSlug' => 'slug']])]
     public function showEpisode(Program $program, Season $season, Episode $episode): Response
     {
        

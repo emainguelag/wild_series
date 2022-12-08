@@ -33,7 +33,7 @@ class Season
     private Collection $episodes;
 
     #[ORM\Column(length: 255)]
-    private ?string $slug = null;
+    private ?string $slug = '';
 
     public function __construct()
     {
