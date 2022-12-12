@@ -5,12 +5,15 @@
 	.
 	{{ episode.number }}
 	de
-	{{ episode.season.program.title }}
+	{{ program.title }}
 {% endblock %}
 
 {% block body %}
+
+
+
 	<h1 class="mt-0">
-		{{ episode.season.program.title }}
+		{{ program.title }}
 		- Saison
 		{{ episode.season.number }}
 		. Episode #
@@ -29,7 +32,8 @@
 			</p>
 			<strong>Durée:</strong>
 			<p>
-				{{ episode.duration }} minutes
+				{{ episode.duration }}
+				minutes
 			</p>
 
 		</div>

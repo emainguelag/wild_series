@@ -4,16 +4,20 @@
 {% endblock %}
 
 {% block body %}
-	<div class="media bg-light">
 
-		<div class="media-body m-3 p-3 ">
+	<div class="row media bg-light">
+        
+		<div class="media-body col-6 m-3 p-3 ">
 			<strong>Nom:</strong>
 			<h1 class="mt-0">{{ actor.name }}</h1>
 
 		</div>
+		<div class="media-body col-6 m-3 p-3 ">
+			<img class="w-25 align-self-start m-3" src="{{ vich_uploader_asset(actor) }}" alt="">
+		</div>
 	</div>
 	<div class="media m-3 p-3 bg-secondary">
-	<strong>Carrière:</strong>
+		<strong>Carrière:</strong>
 		{% for program in actor.programs %}
 			<ul class="list-group col-md-6 offset-md-3 mt-3 mb-3">
 				<a href="{{ path("program_show", { slug: program.slug }) }}" class="list-group-item">
@@ -25,7 +29,34 @@
 		{% endfor %}
 	</div>
 
-	<a href="{{ path('program_index') }}" class="btn btn-primary btn-lg active">
-		Retour à la liste des programmes
-	</a>
+	
+
+	<h1>Actor</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ actor.id }}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>{{ actor.name }}</td>
+			</tr>
+			<tr>
+				<th>Picture</th>
+				<td>{{ actor.picture }}</td>
+			</tr>
+			<tr>
+				<th>UpdatedAt</th>
+				<td>{{ actor.updatedAt ? actor.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_actor_index') }}">back to list</a>
+
+	<a href="{{ path('app_actor_edit', {'id': actor.id}) }}">edit</a>
+
+	{{ include('actor/_delete_form.html.twig') }}
 {% endblock %}
