@@ -34,11 +34,11 @@ class Program
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
-    /*#[Assert\Regex(
-        pattern: '/plus|belle|la|vie/',
+    #[Assert\Regex(
+        pattern: '/(?i)plus belle la vie/',
         match: false,
         message: 'On parle de vraies séries ici',
-    )]*/
+    )]
     private ?string $synopsis = null;
 
     #[ORM\Column(length: 255, nullable: true)]

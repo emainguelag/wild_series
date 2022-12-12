@@ -10,13 +10,18 @@ class ProgramDuration
 {
     public function calculate(Program $program): string
     {
-        $durationInMinutes = 1610;
+            $seasons=$program->getSeasons();
+            $duration = 0;
+            foreach ($seasons as $season) {
+                $episodes=$season->getEpisodes();
+                foreach ($episodes as $episode) {
+                    $duration += $episode->getDuration();
+                }
+            }
 
-        $duration = [0,0,0];
-
-        $days = intdiv($durationInMinutes, 1440);
-        $hours = intdiv(($durationInMinutes - $days*1440), 60);
-        $minutes = $durationInMinutes % 60;
+        $days = intdiv($duration, 1440);
+        $hours = intdiv(($duration - $days*1440), 60);
+        $minutes = $duration % 60;
 
         return $days . ' jour(s), ' . $hours . ' heure(s) et ' . $minutes . ' minute(s)';
     }

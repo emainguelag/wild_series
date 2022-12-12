@@ -60,7 +60,8 @@ class CategoryController extends AbstractController
     {
         $category = $categoryRepository->findOneBy(['name' => $categoryName]);
 
-        $programs = $programRepository->findProgramsByCategory(['categoryName' => $categoryName]);
+       // $programs = $programRepository->findProgramsByCategory(['categoryName' => $categoryName]);
+        $programs = $programRepository->findBy(['category' => $category->getId()]);
 
         
 
