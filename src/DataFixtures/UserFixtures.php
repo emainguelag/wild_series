@@ -52,6 +52,7 @@ class UserFixtures extends Fixture
             );
             $user->setPassword($hashedPassword);
             $manager->persist($user);
+            $this->addReference('owner_' . $i, $user);
         }
 
         $manager->flush();

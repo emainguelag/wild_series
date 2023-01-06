@@ -6,6 +6,7 @@ use App\Entity\Program;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Faker\Factory;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
@@ -51,6 +52,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
         */
 
+        $faker = Factory::create();
 
         foreach(self::SERIES as $keys => $values) {
             $program = new Program();
@@ -63,6 +65,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
             $program->setSynopsis($values['synopsis']);
             $program->setPoster($values['poster']);
             $program->setCategory($this->getReference($values['reference']));
+            $program->setOwner($this->getReference('owner_' . $faker->numberBetween(0, 19)));
             $manager->persist($program);
             $this->addReference('program_' . $keys, $program);
         }
@@ -74,6 +77,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
         // Tu retournes ici toutes les classes de fixtures dont ProgramFixtures dépend
         return [
           CategoryFixtures::class,
+          UserFixtures::class,
         ];
     }
 }

@@ -49,4 +49,7 @@
 	<a href="{{ path('program_index') }}" class="btn btn-primary btn-lg active">
 		Retour à la liste des programmes
 	</a>
+	<a href="{{ path('program_edit', { id: program.id }) }}" class="btn btn-primary btn-lg active">
+		Modifier le programme
+	</a>
 {% endblock %}
