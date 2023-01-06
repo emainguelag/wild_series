@@ -43,4 +43,30 @@
 	<a href="{{ path('program_index') }}" class="btn btn-primary btn-lg active">
 		Retour à la liste des programmes
 	</a>
+
+	{% if app.user %}
+		<div class="media bg-light">
+
+			<div class="media-body m-3 p-3 ">
+				<strong>
+					Donnez votre avis :
+				</strong>
+				{{ form_start(form) }}
+				{{ form_widget(form) }}
+				{{ form_end(form) }}
+
+			</div>
+		</div>
+	{% endif %}
+
+	{% for comment in episode.comments %}
+		<div>
+			<h3>From: {{ comment.author.email }}</h3>
+			<p>{{ comment.comment }}</p>
+			<p>Note: {{ comment.rate }}</p>
+		</div>
+	{% else %}
+		No comments found.
+	{% endfor %}
+
 {% endblock %}

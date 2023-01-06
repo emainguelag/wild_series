@@ -2,6 +2,8 @@
 // src/Controller/ProgramController.php
 namespace App\Controller;
 
+use App\Form\CommentType;
+use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,6 +13,7 @@ use App\Repository\SeasonRepository;
 use App\Entity\Program;
 use App\Entity\Season;
 use App\Entity\Episode;
+use App\Entity\Comment;
 use App\Form\ProgramType;
 use App\Service\ProgramDuration;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,7 +77,7 @@ class ProgramController extends AbstractController
 
         if (!$program) {
             throw $this->createNotFoundException(
-                'No program with name : '.$slug.' found in program\'s table.'
+                'No program with name : '.' found in program\'s table.'
             );
         }
         return $this->render('program/show.html.twig', [
@@ -108,7 +111,7 @@ class ProgramController extends AbstractController
 
         if (!$program || !$season) {
             throw $this->createNotFoundException(
-                'No program with id : '.$id.' found in program\'s table.'
+                'No program with id : '.' found in program\'s table.'
             );
         }
         return $this->render('program/season_show.html.twig', [
@@ -117,19 +120,34 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/{slug}/season/{seasonId}/episode/{episodeId}',methods: ['GET'], name: 'episode_show')]
+    #[Route('/{slug}/season/{seasonId}/episode/{episodeId}',methods: ['GET', 'POST'], name: 'episode_show')]
     // #[Entity('program', options: ['mapping' => ['programId' => 'id']])]
     #[ParamConverter('program', options: ['mapping' => ['slug' => 'slug']])]
     #[ParamConverter('season', options: ['mapping' => ['seasonId' => 'id']])]
     #[ParamConverter('episode', options: ['mapping' => ['episodeId' => 'id']])]
    // #[Entity('episode', options: ['mapping' => ['episodeId' => 'id']])]
-    public function showEpisode(Program $program, Season $season, Episode $episode): Response
+    public function showEpisode(Program $program, Episode $episode, Request $request, CommentRepository $commentRepository): Response
     {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setAuthor($user);
+            $comment->setEpisode($episode);
+            $commentRepository->save($comment, true);
+
+            return $this->redirectToRoute('app_index', [], Response::HTTP_SEE_OTHER);
+        }
        
         return $this->render('program/episode_show.html.twig', [
             'program' => $program,
-           
             'episode' => $episode,
+            'comment' => $comment,
+            'form' => $form->createView(),
         ]);
     }
 }

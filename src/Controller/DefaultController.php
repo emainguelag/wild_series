@@ -9,9 +9,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-
     public function index(): Response
     {
         return $this->render('index.html.twig');
+    }
+
+    #[Route('/logout', name: 'app_logout', methods: ['GET'])]
+    public function logout()
+    {
+        // controller can be blank: it will never be called!
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
 }
