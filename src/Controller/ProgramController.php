@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\CommentType;
+use App\Form\SearchProgramType;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,12 +27,21 @@ use Symfony\Component\Mime\Email;
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(ProgramRepository $programRepository): Response
+    public function index(ProgramRepository $programRepository, Request $request): Response
     {
-        $programs = $programRepository->findAll();
+        $form = $this->createForm(SearchProgramType::class);
+        $form->handleRequest($request);
 
-        return $this->render('program/index.html.twig', [
+        if ($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData()['search'];
+            $programs = $programRepository->findLikeNameAndActor($search);
+        } else {
+            $programs = $programRepository->findAll();
+        }
+
+        return $this->renderForm('program/index.html.twig', [
             'programs' => $programs,
+            'form' => $form,
         ]);
     }
 

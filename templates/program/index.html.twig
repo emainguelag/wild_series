@@ -8,30 +8,37 @@
 		<h1>Toutes les séries de la table program :
 		</h1>
 
-    <div class="row d-flex flex-row">
-		  {% for program in programs %}
-				<div class="card m-3 col-5 ">
-					<img src="{{ program.poster }}" class="card-img-bottom" alt="...">
-					<img class="w-25 align-self-start m-3" src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}">
-					<div class="card-body">
-						<h5 class="card-title">{{ loop.index }}
-							/
-							{{ program.title }}</h5>
-						<p class="card-text">{{ program.synopsis }}</p>
-						<p class="card-text">
-							<small class="text-muted">Catégorie :
-								{{ program.category.name }}</small>
-						</p>
-             <a href="{{ path("program_show", { slug: program.slug }) }}" class="btn btn-primary btn-lg active">Voir la fiche</a>
+		<div class="col-4 m-3">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			<button>Search</button>
+			{{ form_end(form) }}
+		</div>
+
+		<div class="row d-flex flex-row">
+			{% for program in programs %}
+					<div class="card m-3 col-5 ">
+						<img src="{{ program.poster }}" class="card-img-bottom" alt="...">
+						<img class="w-25 align-self-start m-3" src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }}">
+						<div class="card-body">
+							<h5 class="card-title">{{ loop.index }}
+								/
+								{{ program.title }}</h5>
+							<p class="card-text">{{ program.synopsis }}</p>
+							<p class="card-text">
+								<small class="text-muted">Catégorie :
+									{{ program.category.name }}</small>
+							</p>
+							<a href="{{ path("program_show", { slug: program.slug }) }}" class="btn btn-primary btn-lg active">Voir la fiche</a>
+						</div>
 					</div>
-				</div>
 
-		  {% else %}
-			  Aucune série trouvée.
-		  {% endfor %}
-    </div>
+			{% else %}
+				Aucune série trouvée.
+			{% endfor %}
+		</div>
 
-	<a href="{{ path('program_new') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Ajouter une série</a>
+		<a href="{{ path('program_new') }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" >Ajouter une série</a>
 
 		<a href="{{ path('app_index') }}" class="btn btn-primary btn-lg active">
 			Retour à l'accueil

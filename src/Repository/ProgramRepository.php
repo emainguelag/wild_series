@@ -50,7 +50,7 @@ class ProgramRepository extends ServiceEntityRepository
             ->setMaxResults(3)
             ->getQuery();
 
-            return $query->getResult()
+        return $query->getResult()
         ;
     }
 
@@ -66,8 +66,33 @@ class ProgramRepository extends ServiceEntityRepository
             ->select('SUM(e.duration) as episodesDuration')
             ->getQuery();
 
-            return $query->getResult()
+        return $query->getResult()
         ;
+    }
+
+    public function findLikeName(string $name)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.title LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('p.title', 'ASC')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findLikeNameAndActor(string $name)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->addSelect('a')
+            ->leftJoin('p.actors', 'a')
+            ->where('p.title LIKE :name')
+            ->orWhere('a.name LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('p.title', 'ASC')
+            ->getQuery();
+
+        return $query->getResult();
     }
 
 //     public function getMyEntityWithRelatedEntity($parameter) 
